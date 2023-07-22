@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import * as yup from 'yup';
 import { FormButton, StyledField, StyledForm } from './Form.styled';
 
+
 const schema = yup.object().shape({
   name: yup
     .string()
@@ -30,10 +31,17 @@ const initialValues = {
   number: '',
 };
 
+
+
 export const ContactForm = ({ onFormSubmit }) => {
-  const handleSubmit = (values, actions) => {
-    onFormSubmit(values, actions);
-  };
+  const handleSubmit = (newContact, { resetForm }) => {
+    onFormSubmit(newContact, { resetForm }); 
+  
+  resetForm({ 
+    name: '',
+    number: '',
+  });
+};
 
   return (
     <Formik

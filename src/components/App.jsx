@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import { ContactList } from './ContactList/ContactList';
 import { ContactForm } from './Form/Form';
-import { nanoid } from 'nanoid';
 import { Filter } from './Filter/Filter';
+import { nanoid } from 'nanoid';
 
 export class App extends Component {
   state = {
@@ -15,27 +15,19 @@ export class App extends Component {
     filter: '',
   };
 
-  addContact = (values, { resetForm }) => {
-    let newContact = values;
-
-    const verification = this.state.contacts.filter(
+  addContact = (newContact) => {
+      const verification = this.state.contacts.find(
       contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
     );
 
-    if (verification.length) {
+    if (verification) {
       alert(`${newContact.name} is already in contacts`);
       return;
-    } else {
-      newContact.id = nanoid();
-      this.setState(prevState => ({
-        contacts: [...prevState.contacts, newContact],
-      }));
-
-      resetForm({
-        name: '',
-        number: '',
-      });
     }
+    const newContactId = { id: nanoid(), ...newContact}
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, newContactId],
+    }));
   };
 
   onFilter = ({ target: { name, value } }) => {
@@ -49,7 +41,7 @@ export class App extends Component {
       return this.state.contacts;
     }
     return this.state.contacts.filter(({ name }) => {
-      return name.toLowerCase().includes(this.state.filter.toLowerCase());
+      return name.toLowerCase().includes(this.state.filter.toLowerCase().trim());
     });
   };
 
